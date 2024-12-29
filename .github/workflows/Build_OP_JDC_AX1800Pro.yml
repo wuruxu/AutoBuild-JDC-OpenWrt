@@ -5,7 +5,7 @@
 # Youtube Channel: https://goo.gl/fvkdwm 
 #=================================================
 
-name: Build_Redmi_AC2100
+name: Build_JDC_AX1800Pro
 
 # Add a button to trigger the workflow
 on: 
@@ -50,12 +50,11 @@ jobs:
         sudo -E apt-get clean
     - name: Clone source code
       env: 
-        REPO_URL: https://github.com/coolsnowwolf/lede
+        REPO_URL: https://github.com/VIKINGYFY/immortalwrt.git
         REPO_BRANCH: master
       run: |
         git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
-        cd openwrt
-        echo "src-git ssrp https://github.com/fw876/helloworld.git" >> ./feeds.conf.default
+        cd immortalwrt
     - name: Update & Install feeds
       working-directory: ./openwrt
       run: |
@@ -68,22 +67,22 @@ jobs:
     #  run: |
     #    git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git package/luci-theme-argon-jerrykuku   
   
-    - name: Configuration Customization - Build_Redmi_AC2100
+    - name: Configuration Customization - Build_JDC_AX1800Pro
       env:
-        CONFIG_FILE: 'redmi_ac2100.config'
+        CONFIG_FILE: 'ax1800pro.config'
       run: |
-        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
+        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE immortalwrt/.config
         chmod +x ./customize.sh && ./customize.sh
-        cd openwrt && make defconfig
+        cd immortalwrt && make defconfig
         
     - name: Download package
-      working-directory: ./openwrt
+      working-directory: ./immortalwrt
       run: |
         make download -j$(nproc)
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
     - name: Build firmware
-      working-directory: ./openwrt
+      working-directory: ./immortalwrt
       run: |
         echo -e "$(nproc) thread build."
         make -j$(nproc) V=s
@@ -91,4 +90,4 @@ jobs:
       uses: actions/upload-artifact@master
       with:
         name: OpenWrt
-        path: openwrt/bin
+        path: immortalwrt/bin
