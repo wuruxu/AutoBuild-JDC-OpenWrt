@@ -90,4 +90,4 @@ jobs:
       uses: actions/upload-artifact@main
       with:
         name: OpenWrt
-        path: immortalwrt/bin
+        path: immortalwrt/bin/targets/qualcommax/ipq60xx/*.bin
