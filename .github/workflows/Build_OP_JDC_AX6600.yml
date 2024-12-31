@@ -89,5 +89,5 @@ jobs:
     - name : Upload artifact
       uses: actions/upload-artifact@main
       with:
-        name: OpenWrt
-        path: immortalwrt/bin
+        name: JDC_AX6600_immortalwrt
+        path: immortalwrt/bin/targets/qualcommax/ipq60xx/*.bin
